@@ -2,6 +2,8 @@
 
 A Streamlit interface for the Muscatine Water Resource Recovery Facility study. The app reuses the fitted persistence-anchored LightGBM models from the local manuscript GUI, with their original feature order, unit conversions and validation calibration. It does not retrain a model at startup.
 
+Live app: https://muscatine-biogas-forecast.streamlit.app/
+
 Repository: https://github.com/17609858895/Muscatine-Biogas-Streamlit
 
 ## Use
@@ -46,7 +48,7 @@ streamlit run app.py
 | Main file | `app.py` |
 | Python (Advanced settings) | `3.12` |
 
-Follow the [official deployment guide](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy). `packages.txt` supplies Linux OpenMP support for LightGBM. No secrets are needed. The public app URL is recorded only after a successful deployment; a GitHub repository link alone does not mean the app is hosted.
+Follow the [official deployment guide](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy). `packages.txt` supplies Linux OpenMP support for LightGBM. No secrets are needed. The application is deployed at the live URL above. The repository contains its source and model artifacts.
 
 ## Reproduce the bundle
 
