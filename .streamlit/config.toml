@@ -1,12 +1,12 @@
 [theme]
 base = "light"
-primaryColor = "#79C1E4"
-backgroundColor = "#F1F5FA"
-secondaryBackgroundColor = "#F4F7FB"
-textColor = "#30343B"
+primaryColor = "#2F6F73"
+backgroundColor = "#F6F8F7"
+secondaryBackgroundColor = "#F5F9F8"
+textColor = "#24323F"
 font = "sans serif"
 baseFontSize = 16
-dataframeHeaderBackgroundColor = "#E8F0F7"
+dataframeHeaderBackgroundColor = "#EDF4F1"
 
 [server]
 headless = true

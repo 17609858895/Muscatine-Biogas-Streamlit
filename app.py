@@ -12,139 +12,131 @@ import inference
 ROOT = Path(__file__).resolve().parent
 SOFT8 = ["#79C1E4", "#E68282", "#B2D362", "#BAE1F3", "#D4EAF8", "#EECDD5", "#F8E6E4", "#D1E4A6"]
 INK = "#30343B"
-VERSION = "2026.10.06.2"
+VERSION = "2026.10.06.3"
 
 st.set_page_config(page_title="Muscatine | Biogas forecast", layout="wide")
 st.markdown("""
+
 <style>
-.stApp { background: #F1F5FA; color: #30343B; font-family: "Segoe UI", Arial, sans-serif; }
-.stMainBlockContainer { max-width: 1840px; padding: 1.6rem 3rem 2rem; }
+.stApp { background: #F6F8F7; color: #24323F; font-family: "Segoe UI", Arial, sans-serif; }
+.stMainBlockContainer { max-width: 1320px; padding: 1.4rem 2rem 2.4rem; }
 [data-testid="stHeader"] { background: transparent; }
-h1, h2, h3 { color: #263648; letter-spacing: -.35px; }
-h3 { font-size: 1.15rem !important; font-weight: 650; padding: 0 0 .3rem; }
+h1, h2, h3 { color: #24323F; letter-spacing: 0; }
+h3 { font-size: 1.13rem !important; font-weight: 700; padding: 0 0 .4rem; }
 [data-testid="stMarkdownContainer"] p { line-height: 1.5; }
 [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p {
-    color: #43566A !important; font-size: 15px !important; line-height: 1.5; opacity: 1;
+    color: #526575 !important; font-size: 15px !important; line-height: 1.45; opacity: 1;
 }
-[data-testid="stWidgetLabel"] p { font-size: 15px; font-weight: 500; color: #30343B; }
+[data-testid="stWidgetLabel"] p { font-size: 16px; font-weight: 600; color: #24323F; }
+.app-header {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 21px 25px; margin-bottom: 8px; border-radius: 11px;
+    background: linear-gradient(115deg, #173F45 0%, #2F6F73 63%, #5EA7A3 100%);
+    box-shadow: 0 8px 22px rgba(24,66,72,.11);
+}
+.brand h1 { color: #FFFFFF !important; margin: 0; padding: 0; font-size: 31px; font-weight: 750; line-height: 1.2; }
+.brand p { color: #F0FAFA !important; margin: 9px 0 0; font-size: 16px; line-height: 1.45; }
+.header-tags { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.header-tags span {
+    color: #FFFFFF; font-size: 14px; font-weight: 600; white-space: nowrap;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.28);
+    border-radius: 6px; padding: 5px 10px;
+}
+[data-testid="stTabs"] [role="tablist"] {
+    gap: 6px; padding: 0 0 7px; border-bottom: 1px solid #D8E3E0; background: transparent; margin-bottom: 20px;
+}
+[data-testid="stTabs"] [role="tab"] {
+    border-radius: 6px 6px 0 0; padding: 9px 18px; min-height: 43px; color: #526575;
+}
+[data-testid="stTabs"] [role="tab"] p { font-size: 16px; font-weight: 650; }
+[data-testid="stTabs"] [role="tab"][aria-selected="true"] { color: #20585D; background: #E5F1EF; }
+[data-testid="stTabs"] .react-aria-SelectionIndicator { background: #2F6F73; height: 2px; }
 .st-key-input_panel, .st-key-result_panel, .st-key-batch_input_panel,
 .st-key-batch_result_panel, .st-key-validation_header,
 .st-key-validation_plot_panel, .st-key-validation_table_panel {
-    background: #FFFFFF; border: 1px solid #D5E0EB !important;
-    border-radius: 12px; padding: 22px 24px; gap: 12px;
-    box-shadow: 0 2px 5px rgba(38, 54, 72, .025);
+    background: #FFFFFF; border: 1px solid #DEE7E4 !important; border-radius: 10px;
+    padding: 20px 22px; gap: 12px; box-shadow: 0 5px 18px rgba(36,50,63,.035);
 }
-.st-key-input_panel, .st-key-batch_input_panel { background: #F9FBFD; }
-.st-key-input_panel h3, .st-key-batch_input_panel h3 { font-size: 1.05rem !important; }
-.st-key-input_sections > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] {
-    flex-direction: column; gap: 18px;
+.st-key-forecast_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"],
+.st-key-batch_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] {
+    flex-direction: column; gap: 20px;
 }
-.st-key-input_sections > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+.st-key-forecast_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
+.st-key-batch_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
     width: 100%; min-width: 0; flex: 1 1 100%;
 }
-.st-key-input_panel hr { margin: 4px 0; }
+.st-key-input_sections > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] {
+    flex-direction: row; gap: 28px;
+}
+.st-key-input_sections > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+    width: calc(50% - 14px); min-width: 0; flex: 1 1 calc(50% - 14px);
+}
+.st-key-input_panel h3 {
+    color: #2F6F73; font-size: 1.06rem !important; padding-bottom: 10px;
+    border-bottom: 1px solid #E3ECE9; margin-bottom: 4px;
+}
+.st-key-input_panel [data-testid="stVerticalBlock"] { gap: 10px; }
+.st-key-input_panel hr { margin: 2px 0; }
 [data-testid="stMetric"] {
-    background: transparent; border: 0; padding: 8px 4px 14px; min-height: 88px;
+    background: #F8FBFC; border: 1px solid #E0E9E9; border-left: 4px solid #79C1E4;
+    border-radius: 8px; padding: 14px 16px; min-height: 104px;
 }
-[data-testid="stMetricLabel"] p { color: #43566A; font-size: 15px; }
-[data-testid="stMetricValue"] { font-size: 2.15rem; font-weight: 650; color: #263648; }
-.st-key-forecast_metrics { border-bottom: 1px solid #E3EAF1; margin-bottom: 2px; }
-.st-key-forecast_metrics [data-testid="stColumn"] + [data-testid="stColumn"],
-.st-key-validation_metrics [data-testid="stColumn"] + [data-testid="stColumn"] {
-    border-left: 1px solid #E3EAF1; padding-left: 20px;
-}
-[data-testid="stTabs"] [role="tablist"] {
-    gap: 8px; padding: 0 0 12px; border-bottom: 1px solid #D5E0EB;
-    background: transparent; margin-bottom: 22px;
-}
-[data-testid="stTabs"] [role="tab"] {
-    border-radius: 7px; padding: 9px 20px; min-height: 42px; color: #43566A;
-}
-[data-testid="stTabs"] [role="tab"] p { font-size: 16px; font-weight: 600; }
-[data-testid="stTabs"] [role="tab"][aria-selected="true"] {
-    color: #263648; background: #D4EAF8;
-}
-[data-testid="stTabs"] .react-aria-SelectionIndicator { display: none; }
+.st-key-forecast_metrics [data-testid="stColumn"]:nth-child(2) [data-testid="stMetric"],
+.st-key-validation_metrics [data-testid="stColumn"]:nth-child(2) [data-testid="stMetric"] { border-left-color: #B2D362; }
+.st-key-forecast_metrics [data-testid="stColumn"]:nth-child(3) [data-testid="stMetric"],
+.st-key-validation_metrics [data-testid="stColumn"]:nth-child(3) [data-testid="stMetric"] { border-left-color: #E68282; }
+[data-testid="stMetricLabel"] p { color: #526575; font-size: 15px; font-weight: 600; }
+[data-testid="stMetricValue"] { font-size: 2.05rem; font-weight: 750; color: #24323F; }
+.st-key-forecast_metrics { margin: 4px 0 2px; }
 [data-testid="stButton"] button, [data-testid="stDownloadButton"] button {
-    border: 1px solid #BACDDC; border-radius: 7px; min-height: 42px;
-    color: #263648; background: #FFFFFF;
+    border: 1px solid #CADBD6; border-radius: 7px; min-height: 43px; color: #24323F; background: #FFFFFF;
 }
-[data-testid="stButton"] button p, [data-testid="stDownloadButton"] button p { font-size: 15px; font-weight: 600; }
+[data-testid="stButton"] button p, [data-testid="stDownloadButton"] button p { font-size: 16px; font-weight: 650; }
 [data-testid="stButton"] button[kind="primary"] {
-    color: #263648 !important; background: #79C1E4; border-color: #79C1E4;
-    min-height: 46px;
+    color: #FFFFFF !important; background: #2F6F73; border-color: #2F6F73; min-height: 46px;
 }
 [data-testid="stButton"] button:hover, [data-testid="stDownloadButton"] button:hover {
-    border-color: #79C1E4; background: #EAF5FB; color: #263648;
+    border-color: #2F6F73; background: #EDF5F3; color: #20585D;
 }
-[data-testid="stButton"] button[kind="primary"]:hover { background: #BAE1F3; }
-[data-testid="stButton"] button:disabled { color: #637588 !important; background: #E1EAF2; }
-button:focus-visible, input:focus-visible, [role="tab"]:focus-visible { outline: 2px solid #43566A; outline-offset: 3px; }
+[data-testid="stButton"] button[kind="primary"]:hover { color: #FFFFFF !important; background: #245B60; }
+[data-testid="stButton"] button:disabled { color: #637588 !important; background: #E1EAF2; border-color: #D6E0E6; }
+button:focus-visible, input:focus-visible, [role="tab"]:focus-visible { outline: 2px solid #2F6F73; outline-offset: 3px; }
 [data-testid="stExpander"] { background: transparent; }
-[data-testid="stExpander"] details { border-color: #D5E0EB; border-radius: 7px; }
-[data-testid="stExpander"] summary p { font-size: 15px; font-weight: 500; color: #43566A; }
+[data-testid="stExpander"] details { border-color: #DCE6E2; border-radius: 7px; }
+[data-testid="stExpander"] summary p { font-size: 15px; font-weight: 550; color: #526575; }
 [data-testid="stDataFrame"], [data-testid="stDataEditor"] { border-radius: 7px; overflow: hidden; }
 [data-testid="stDivider"] { margin: 0; }
-.app-header {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 24px; padding: 6px 0 22px; margin-bottom: 4px;
-}
-.brand { display: flex; align-items: center; gap: 16px; }
-.brand-symbol {
-    width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
-    background: #BAE1F3; display: flex; align-items: center; justify-content: center;
-}
-.brand h1 { margin: 0; padding: 0; font-size: 28px; font-weight: 700; line-height: 1.25; }
-.brand p { margin: 5px 0 0; font-size: 15px; color: #43566A; line-height: 1.4; }
-.header-tags { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
-.header-tags span, .mode-badge {
-    color: #43566A; font-size: 13px; font-weight: 600; background: #FFFFFF;
-    border: 1px solid #D5E0EB; border-radius: 6px; padding: 6px 10px;
-}
 .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.panel-heading h2 { font-size: 21px; font-weight: 650; line-height: 1.3; margin: 0; padding: 0; }
-.mode-badge { background: #D4EAF8; border-color: #D4EAF8; white-space: nowrap; }
-.section-number { display: inline-block; color: #43566A; font-size: 14px; margin-right: 8px; }
-.empty-state { padding: 48px 16px 58px; text-align: center; color: #43566A; }
+.panel-heading h2 { color: #24323F; font-size: 22px; font-weight: 750; line-height: 1.3; margin: 0; padding: 0; }
+.mode-badge { color: #20585D; font-size: 14px; font-weight: 650; background: #E5F1EF; border-radius: 6px; padding: 6px 10px; white-space: nowrap; }
+.empty-state { padding: 36px 16px 40px; text-align: center; color: #526575; }
 .empty-state svg { margin-bottom: 16px; }
 .empty-state h3 { margin: 0 0 8px; font-size: 20px; }
-.empty-state p { margin: 0; font-size: 15px; }
+.empty-state p { margin: 0; font-size: 16px; }
 .app-footer {
     display: flex; align-items: center; justify-content: space-between; gap: 20px;
-    margin-top: 20px; padding-top: 16px; border-top: 1px solid #D5E0EB;
-    font-size: 13px; color: #43566A;
+    margin-top: 20px; padding-top: 16px; border-top: 1px solid #D8E3E0; font-size: 13px; color: #526575;
 }
-.app-footer a { color: #43566A; text-underline-offset: 3px; }
-@media (max-width: 1050px) {
-    .stMainBlockContainer { padding: 1.3rem 1.5rem; }
-    .st-key-input_panel, .st-key-result_panel, .st-key-batch_input_panel,
-    .st-key-batch_result_panel, .st-key-validation_plot_panel, .st-key-validation_table_panel { padding: 18px; }
-    .header-tags span:last-child { display: none; }
-    .st-key-forecast_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"],
-    .st-key-batch_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"],
-    .st-key-validation_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] {
-        flex-direction: column; gap: 20px;
-    }
-    .st-key-forecast_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
-    .st-key-batch_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
-    .st-key-validation_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
-        width: 100%; min-width: 100%; flex: 1 1 100%;
-    }
-}
-@media (min-width: 641px) and (max-width: 1050px) {
-    .st-key-input_sections > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] {
-        flex-direction: row; gap: 24px;
-    }
-    .st-key-input_sections > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
-        width: calc(50% - 12px); flex: 1 1 calc(50% - 12px);
-    }
+.app-footer a { color: #526575; text-underline-offset: 3px; }
+@media (max-width: 1100px) {
+    .stMainBlockContainer { padding: 1.2rem 1.5rem 2rem; }
+    .st-key-validation_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] { flex-direction: column; gap: 20px; }
+    .st-key-validation_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] { width: 100%; min-width: 0; flex: 1 1 100%; }
 }
 @media (max-width: 640px) {
     .stMainBlockContainer { padding: 1rem; }
-    .app-header { align-items: flex-start; gap: 12px; }
-    .brand-symbol, .header-tags { display: none; }
-    .brand h1 { font-size: 26px; }
+    .app-header { padding: 20px; }
+    .brand h1 { font-size: 25px; }
+    .brand p { font-size: 15px; }
+    .header-tags { display: none; }
+    .st-key-input_panel, .st-key-result_panel, .st-key-batch_input_panel,
+    .st-key-batch_result_panel, .st-key-validation_header,
+    .st-key-validation_plot_panel, .st-key-validation_table_panel { padding: 17px; }
+    .st-key-input_sections > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] { flex-direction: column; gap: 18px; }
+    .st-key-input_sections > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] { width: 100%; flex: 1 1 100%; }
     [data-testid="stTabs"] [role="tab"] { padding: 8px 10px; }
+    [data-testid="stMetric"] { padding: 12px 10px; }
+    [data-testid="stMetricValue"] { font-size: 1.8rem; }
     .app-footer { flex-direction: column; align-items: flex-start; gap: 4px; }
 }
 </style>
@@ -225,14 +217,10 @@ metadata = bundle()["metadata"]
 st.markdown('''
 <header class="app-header">
   <div class="brand">
-    <div class="brand-symbol" aria-hidden="true">
-      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="#263648" stroke-width="1.7" stroke-linecap="round">
-        <path d="M5 11C9 6 11 16 16 11S23 6 27 11M5 17C9 12 11 22 16 17S23 12 27 17M5 23C9 18 11 28 16 23S23 18 27 23"/>
-      </svg>
-    </div>
-    <div><h1>Biogas forecast</h1><p>Muscatine WRRF · Metered gas flow to boilers and burner</p></div>
+    <h1>Biogas Forecast for Muscatine WRRF</h1>
+    <p>Hourly metered gas flow to boilers and burner · History and feeding-plan comparison</p>
   </div>
-  <div class="header-tags"><span>1–24 h horizons</span><span>LightGBM</span><span>Research prototype</span></div>
+  <div class="header-tags"><span>1–24 h horizons</span><span>LightGBM · Research model</span></div>
 </header>
 ''', unsafe_allow_html=True)
 forecast_tab, batch_tab, model_tab = st.tabs(["Forecast", "Batch forecasts", "Model validation"])
@@ -277,13 +265,24 @@ with forecast_tab:
             st.subheader("2 · Feeding plan")
             include_plan = st.checkbox("Compare with a 24-hour feeding plan")
             if include_plan:
-                plan_source = st.selectbox("Plan source", ["Create a plan", "Upload file", "Recorded-feed example (oracle)"])
+                st.caption("Configure the 24-hour future-feed inputs below.")
+            else:
+                st.caption("Enable a plan to compare future-feed inputs with the history-only forecast.")
+            with st.expander("Plan format and example"):
+                st.write("Provide 24 hourly rows from origin + 1 h through origin + 24 h. HSW is the total of both feed lines.")
+                st.code("\n".join(inference.PLAN_COLUMNS), language=None)
+                st.download_button("Recorded-feed example · CSV", (ROOT / "data/recorded_feed_oracle_24h.csv").read_bytes(), "recorded_feed_oracle_24h.csv", "text/csv", width="stretch")
+                st.caption("This file contains executed feeding used as an oracle, rather than an issued plan.")
+        if include_plan:
+            with st.container(key="plan_controls"):
+                plan_source_col, scenario_col = st.columns(2, gap="large")
+                plan_source = plan_source_col.selectbox("Plan source", ["Create a plan", "Upload file", "Recorded-feed example (oracle)"])
                 if plan_source == "Create a plan" and origin is not None:
                     defaults = example_plan()
-                    a, b = st.columns(2, gap="small")
+                    a, b, c = st.columns(3, gap="large")
                     hsw = a.number_input("HSW (m³ h⁻¹)", min_value=0.0, value=float(defaults.hsw_m3_h.mean()), step=0.1)
                     twas = b.number_input("TWAS (m³ h⁻¹)", min_value=0.0, value=float(defaults.twas_m3_h.mean()), step=0.1)
-                    ps = st.number_input("PS on-time (0–1)", min_value=0.0, max_value=1.0, value=float(defaults.ps_on_fraction.mean()), step=0.01)
+                    ps = c.number_input("PS on-time (0–1)", min_value=0.0, max_value=1.0, value=float(defaults.ps_on_fraction.mean()), step=0.01)
                     plan = inference.constant_plan(origin, hsw, ps, twas)
                     st.caption("These values apply to each hour; individual hours can be edited below.")
                 elif plan_source == "Upload file":
@@ -308,19 +307,12 @@ with forecast_tab:
                                 "ps_on_fraction": st.column_config.NumberColumn("PS on-time", min_value=0.0, max_value=1.0),
                                 "twas_m3_h": st.column_config.NumberColumn("TWAS (m³ h⁻¹)", min_value=0.0),
                             })
-                    multiplier = st.selectbox("HSW scenario", ["100% of supplied HSW", "75% of supplied HSW", "125% of supplied HSW"])
+                    multiplier = scenario_col.selectbox("HSW scenario", ["100% of supplied HSW", "75% of supplied HSW", "125% of supplied HSW"])
                     plan = plan.copy()
                     try:
                         plan["hsw_m3_h"] = pd.to_numeric(plan.hsw_m3_h, errors="raise") * {"100%": 1.0, "75%": .75, "125%": 1.25}[multiplier.split()[0]]
                     except ValueError:
                         input_error = "The HSW plan must contain numeric values."
-            else:
-                st.caption("Enable a plan to compare future-feed inputs with the history-only forecast.")
-            with st.expander("Plan format and example"):
-                st.write("Provide 24 hourly rows from origin + 1 h through origin + 24 h. HSW is the total of both feed lines.")
-                st.code("\n".join(inference.PLAN_COLUMNS), language=None)
-                st.download_button("Recorded-feed example · CSV", (ROOT / "data/recorded_feed_oracle_24h.csv").read_bytes(), "recorded_feed_oracle_24h.csv", "text/csv", width="stretch")
-                st.caption("This file contains executed feeding used as an oracle, rather than an issued plan.")
         st.divider()
         ready = history is not None and origin is not None and input_error is None and (not include_plan or plan is not None)
         if input_error:
