@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "models": 18,
+  "horizons": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    9,
+    12,
+    18,
+    24
+  ],
+  "native_vs_bundle_max_abs_error_m3_h": 0.0,
+  "history_only_unchanged_by_plan": true,
+  "HSW_125_percent_change_24h_m3_h": 2.656689277884851,
+  "rejected_inputs": {
+    "short_history": "Provide at least 168 consecutive hourly records ending at the forecast origin.",
+    "missing_column": "Missing columns: cover_d1_m",
+    "nonfinite": "Missing or non-finite values are not accepted. No values are filled automatically.",
+    "hourly_gap": "Hourly data must be consecutive, without gaps.",
+    "negative_flow": "twas_m3_h must be non-negative.",
+    "misaligned_plan": "The plan must contain exactly 24 rows, from origin + 1 h through origin + 24 h."
+  },
+  "xlsx_export_metadata": {
+    "creator": "CHONG LIU",
+    "lastModifiedBy": "CHONG LIU"
+  },
+  "xlsx_retains_extra_input_columns": true,
+  "xlsx_history_adapter": "passed",
+  "batch_rows": 9,
+  "bundle_sha256": "f9f8536c28a8929bd5155c02e8eea9e539ab4b9b47f0acee9e93bea83ee3dd75"
+}

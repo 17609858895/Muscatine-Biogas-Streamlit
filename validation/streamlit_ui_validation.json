@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "default_24h_display": 212.1,
+  "oracle_24h_display": 211.0,
+  "uncaught_ui_errors": 0,
+  "batch_rows": 90,
+  "tested_modes": [
+    "history only",
+    "recorded-feed oracle",
+    "10 consecutive forecast origins"
+  ]
+}

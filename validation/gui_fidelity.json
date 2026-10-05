@@ -1,0 +1,7 @@
+{
+  "native_exports": 18,
+  "test_origins_per_horizon": 1797,
+  "example_origin": "2023-01-21 10:00:00",
+  "gui_max_abs_error_m3_h": 0.7994317374284492,
+  "source_pickle_sha256": "0439589196bf5614c49985b5f79345ca13e038e030b843a58a9cafb3ac7f08f0"
+}

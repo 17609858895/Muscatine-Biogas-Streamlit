@@ -1,0 +1,8 @@
+* text=auto eol=lf
+predictor.py -text
+models/*.txt -text
+models/calibration.json -text
+models/history_bounds.json -text
+models/*.joblib binary
+data/*.csv -text
+validation/*.csv -text
