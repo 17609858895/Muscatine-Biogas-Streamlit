@@ -11,22 +11,83 @@ import inference
 ROOT = Path(__file__).resolve().parent
 SOFT8 = ["#79C1E4", "#E68282", "#B2D362", "#BAE1F3", "#D4EAF8", "#EECDD5", "#F8E6E4", "#D1E4A6"]
 INK = "#30343B"
-VERSION = "2026.10.06"
+VERSION = "2026.10.06.1"
 
 st.set_page_config(page_title="Muscatine | Biogas forecast", layout="wide")
 st.markdown("""
 <style>
-.stMainBlockContainer { max-width: 1220px; padding-top: 2rem; padding-bottom: 2rem; }
-h1 { letter-spacing: -.6px; font-size: 2rem !important; }
-[data-testid="stSidebar"] { border-right: 1px solid #BAE1F3; }
-[data-testid="stMetric"] { border: 1px solid #BAE1F3; border-radius: 10px; padding: 14px 18px; min-height: 102px; }
-[data-testid="stMetricValue"] { font-size: 1.8rem; color: #30343B; }
-[data-testid="stButton"] button[kind="primary"] { color: #30343B !important; }
-[data-testid="stVerticalBlockBorderWrapper"] > div { border-color: #BAE1F3 !important; }
-.intro { border-left: 4px solid #79C1E4; padding: 4px 0 4px 20px; margin: 0 0 22px; }
-.intro h1 { margin: 0; padding: 0 0 8px; }
-.intro p { margin: 0; font-size: 15px; color: #30343B; }
-.version { font-size: 12px; padding: 6px 0; }
+.stApp { background: #F1F5FA; color: #30343B; }
+.stMainBlockContainer { max-width: 1280px; padding-top: 2rem; padding-bottom: 2.5rem; }
+[data-testid="stHeader"] { background: #F1F5FA; }
+h1, h2, h3 { color: #263648; letter-spacing: -.3px; }
+h3 { font-size: 1.2rem !important; padding-bottom: .3rem; }
+[data-testid="stMarkdownContainer"] p { line-height: 1.6; }
+[data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p {
+    color: #43566A !important; font-size: 15px !important; line-height: 1.6; opacity: 1;
+}
+[data-testid="stWidgetLabel"] p { font-size: 15px; font-weight: 600; color: #30343B; }
+[data-testid="stSidebar"] { background: #E8F0F7; border-right: 1px solid #CAD9E5; }
+[data-testid="stSidebar"] [data-testid="stSidebarContent"] { padding-top: 1rem; }
+.st-key-history_card, .st-key-plan_card, .st-key-outlook_card,
+.st-key-batch_card, .st-key-validation_card {
+    background: #FFFFFF; border: 1px solid #CAD9E5 !important;
+    border-radius: 16px; padding: 22px; box-shadow: 0 3px 12px rgba(38, 54, 72, .04);
+}
+.st-key-history_card, .st-key-plan_card { border-top: 3px solid #79C1E4 !important; }
+.st-key-plan_card { border-top-color: #E68282 !important; }
+[data-testid="stMetric"] {
+    background: #FFFFFF; border: 1px solid #CAD9E5; border-radius: 14px;
+    padding: 16px 20px; min-height: 116px; box-shadow: 0 3px 12px rgba(38, 54, 72, .04);
+}
+[data-testid="stMetricLabel"] p { color: #43566A; font-size: 15px; font-weight: 500; }
+[data-testid="stMetricValue"] { font-size: 2.15rem; font-weight: 600; color: #263648; }
+[data-testid="stTabs"] [role="tablist"] {
+    gap: 8px; padding: 6px; border: 1px solid #CAD9E5; border-radius: 12px;
+    background: #E8F0F7; margin-bottom: 18px;
+}
+[data-testid="stTabs"] [role="tab"] {
+    border-radius: 8px; padding: 10px 20px; min-height: 44px; color: #43566A;
+}
+[data-testid="stTabs"] [role="tab"] p { font-size: 16px; font-weight: 600; }
+[data-testid="stTabs"] [role="tab"][aria-selected="true"] {
+    color: #263648; background: #FFFFFF; box-shadow: 0 2px 6px rgba(38, 54, 72, .06);
+}
+[data-testid="stTabs"] .react-aria-SelectionIndicator { display: none; }
+[data-testid="stButton"] button, [data-testid="stDownloadButton"] button {
+    border: 1px solid #BACDDC; border-radius: 10px; min-height: 44px;
+    color: #263648; background: #FFFFFF;
+}
+[data-testid="stButton"] button p, [data-testid="stDownloadButton"] button p { font-size: 15px; font-weight: 600; }
+[data-testid="stButton"] button[kind="primary"] {
+    color: #263648 !important; background: #79C1E4; border-color: #79C1E4;
+    min-height: 48px; box-shadow: 0 3px 8px rgba(38, 54, 72, .08);
+}
+[data-testid="stButton"] button:hover, [data-testid="stDownloadButton"] button:hover {
+    border-color: #79C1E4; background: #EAF5FB; color: #263648;
+}
+[data-testid="stButton"] button[kind="primary"]:hover { background: #BAE1F3; }
+[data-testid="stButton"] button:disabled { color: #637588 !important; background: #E1EAF2; }
+button:focus-visible, input:focus-visible, [role="tab"]:focus-visible { outline: 2px solid #43566A; outline-offset: 3px; }
+[data-testid="stExpander"] { background: #FFFFFF; border-radius: 10px; }
+[data-testid="stExpander"] details { border-color: #CAD9E5; }
+[data-testid="stExpander"] summary p { font-size: 15px; font-weight: 500; color: #30343B; }
+[data-testid="stDataFrame"], [data-testid="stDataEditor"] { border-radius: 10px; overflow: hidden; }
+.intro {
+    background: #FFFFFF; border: 1px solid #CAD9E5; border-left: 5px solid #79C1E4;
+    border-radius: 16px; padding: 24px 28px; margin: 0 0 22px;
+    box-shadow: 0 3px 12px rgba(38, 54, 72, .04);
+}
+.intro h1 { margin: 0; padding: 0 0 8px; font-size: 2.1rem; line-height: 1.25; }
+.intro p { margin: 0; font-size: 16px; line-height: 1.6; color: #43566A; }
+.intro .eyebrow { margin-bottom: 8px; color: #43566A; font-size: 14px; font-weight: 600; }
+@media (max-width: 640px) {
+    .stMainBlockContainer { padding: 1rem; }
+    .intro { padding: 20px; }
+    .intro h1 { font-size: 1.8rem; }
+    .st-key-history_card, .st-key-plan_card, .st-key-outlook_card,
+    .st-key-batch_card, .st-key-validation_card { padding: 16px; }
+    [data-testid="stTabs"] [role="tab"] { padding: 8px 12px; }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -56,6 +117,20 @@ def signature(history, plan):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def forecast_columns():
+    """Readable display labels and precision; downloaded values retain full precision."""
+    columns = {
+        "origin": st.column_config.TextColumn("Forecast origin"),
+        "horizon_h": st.column_config.NumberColumn("Horizon (h)", format="%d"),
+        "target_time": st.column_config.TextColumn("Forecast time"),
+        "persistence_m3_h": st.column_config.NumberColumn("Persistence (m³ h⁻¹)", format="%.1f"),
+    }
+    for regime, label in [("past", "History"), ("feed", "Plan")]:
+        for suffix, bound in [("_m3_h", ""), ("_lower_m3_h", " · lower"), ("_upper_m3_h", " · upper")]:
+            columns[regime + suffix] = st.column_config.NumberColumn(label + bound + " (m³ h⁻¹)", format="%.1f")
+    return columns
+
+
 def chart(result):
     rows = pd.DataFrame(result["rows"])
     has_plan = "feed_m3_h" in rows
@@ -72,11 +147,11 @@ def chart(result):
     fig.add_trace(go.Scatter(x=[0, 24], y=[rows.persistence_m3_h.iloc[0]] * 2, line=dict(color=SOFT8[2], width=1.5, dash="dot"), name="Persistence"))
     fig.add_vline(x=0, line_color=INK, line_dash="dash", line_width=1)
     fig.update_layout(
-        template="plotly_white", height=370, margin=dict(l=20, r=20, t=58, b=18),
-        font=dict(family="Arial", color=INK, size=12),
-        legend=dict(orientation="h", yanchor="bottom", y=1.08, x=0, font=dict(size=11)),
-        xaxis=dict(title="Hours from forecast origin", tickvals=[-24, -12, 0, 6, 12, 18, 24], ticktext=["−24", "−12", "Origin", "6", "12", "18", "24"], gridcolor=SOFT8[4], zeroline=False),
-        yaxis=dict(title="Biogas flow (m³ h⁻¹)", gridcolor=SOFT8[4], zeroline=False),
+        template="plotly_white", height=400, margin=dict(l=20, r=20, t=66, b=24),
+        font=dict(family="Arial", color=INK, size=14),
+        legend=dict(orientation="h", yanchor="bottom", y=1.08, x=0, font=dict(size=13)),
+        xaxis=dict(title="Hours from forecast origin", tickfont=dict(size=13), tickvals=[-24, -12, 0, 6, 12, 18, 24], ticktext=["−24", "−12", "Origin", "6", "12", "18", "24"], gridcolor=SOFT8[4], zeroline=False),
+        yaxis=dict(title="Biogas flow (m³ h⁻¹)", tickfont=dict(size=13), gridcolor=SOFT8[4], zeroline=False),
         hovermode="x unified", paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF",
     )
     return fig
@@ -99,14 +174,14 @@ with st.sidebar:
     st.markdown("[Code and models](https://github.com/17609858895/Muscatine-Biogas-Streamlit)")
     st.caption(f"Version {VERSION}")
 
-st.markdown('<div class="intro"><h1>Biogas forecast</h1><p>Use process history and a feeding plan to compare hourly to day-ahead predictions.</p></div>', unsafe_allow_html=True)
+st.markdown('<div class="intro"><p class="eyebrow">Muscatine WRRF · 1–24 h forecasts</p><h1>Biogas forecast</h1><p>Use process history and a feeding plan to compare hourly to day-ahead predictions.</p></div>', unsafe_allow_html=True)
 forecast_tab, batch_tab, model_tab = st.tabs(["Forecast", "Batch forecasts", "Model validation"])
 
 with forecast_tab:
     history, plan, origin = None, None, None
     input_error = None
     left, right = st.columns(2, gap="large")
-    with left, st.container(border=True):
+    with left, st.container(border=True, key="history_card", height="stretch"):
         st.subheader("1 · Process history")
         source = st.radio("History source", ["Historical example", "Upload file"], horizontal=True)
         if source == "Historical example":
@@ -132,7 +207,7 @@ with forecast_tab:
         if history is not None:
             with st.expander("Preview process history"):
                 st.dataframe(history.tail(12), hide_index=True, width="stretch")
-    with right, st.container(border=True):
+    with right, st.container(border=True, key="plan_card", height="stretch"):
         st.subheader("2 · Feeding plan")
         include_plan = st.checkbox("Compare with a 24-hour feeding plan")
         if include_plan:
@@ -199,20 +274,20 @@ with forecast_tab:
         for col, h in zip(cols, [1, 6, 24]):
             row = frame[frame.horizon_h == h].iloc[0]
             col.metric(f"{h} h ahead (m³ h⁻¹)", f"{row[active + '_m3_h']:.1f}")
-        with st.container(border=True):
+        with st.container(border=True, key="outlook_card"):
             st.subheader("Hourly to day-ahead outlook")
-            st.plotly_chart(chart(result), width="stretch", config={"displaylogo": False}, key="forecast_chart")
+            st.plotly_chart(chart(result), width="stretch", theme=None, config={"displaylogo": False}, key="forecast_chart")
             st.caption("Nine discrete forecast horizons. The lines connect model outputs; the shaded band is the selected model's validation-calibrated 90% interval.")
         if result["out_of_training_range"]:
             st.warning("History values outside the training range: " + ", ".join(result["out_of_training_range"]))
         st.caption("Plan differences are conditional predictions. The interface has not been validated in plant operation. Its LightGBM model and fixed intervals differ from the manuscript ensemble and online ACI.")
         with st.expander("Forecast values and intervals", expanded=True):
-            st.dataframe(frame, hide_index=True, width="stretch", height=350)
+            st.dataframe(frame, hide_index=True, width="stretch", height=380, row_height=36, column_config=forecast_columns())
         c1, c2 = st.columns(2)
         c1.download_button("Download forecasts · CSV", frame.to_csv(index=False).encode("utf-8-sig"), "muscatine_forecasts.csv", "text/csv", width="stretch")
         c2.download_button("Download forecasts and inputs · XLSX", inference.workbook_bytes(frame, saved["history"], saved["plan"]), "muscatine_forecasts.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", width="stretch")
 
-with batch_tab:
+with batch_tab, st.container(border=True, key="batch_card"):
     st.subheader("Forecast consecutive origins")
     st.write("Upload a continuous hourly history. Each origin uses its preceding 168 hours and produces the nine history-only forecasts.")
     batch_source = st.radio("Batch source", ["Historical batch example", "Upload file"], horizontal=True)
@@ -242,12 +317,12 @@ with batch_tab:
         saved = st.session_state.batch_result
         output = saved["output"]
         st.caption(f"{output.origin.nunique()} origins · {len(output):,} forecast rows · history-only model")
-        st.dataframe(output, hide_index=True, width="stretch", height=350)
+        st.dataframe(output, hide_index=True, width="stretch", height=380, row_height=36, column_config=forecast_columns())
         b1, b2 = st.columns(2)
         b1.download_button("Download batch · CSV", output.to_csv(index=False).encode("utf-8-sig"), "muscatine_batch.csv", "text/csv", width="stretch")
         b2.download_button("Download batch and inputs · XLSX", inference.workbook_bytes(output, saved["history"]), "muscatine_batch.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", width="stretch")
 
-with model_tab:
+with model_tab, st.container(border=True, key="validation_card"):
     st.subheader("Hold-out evaluation of the GUI model")
     m1, m2, m3 = st.columns(3)
     m1.metric("Training origins", f"{metadata['training_rows']:,}")
@@ -258,13 +333,19 @@ with model_tab:
     for regime, label, color in [("past", "History only", SOFT8[0]), ("feed", "Executed-feed oracle", SOFT8[1])]:
         subset = metrics[metrics.regime == regime]
         fig.add_trace(go.Scatter(x=subset.h, y=subset.test_R2, mode="lines+markers", name=label, line=dict(color=color, width=2.5)))
-    fig.update_layout(template="plotly_white", height=330, font=dict(color=INK, family="Arial"), legend=dict(orientation="h", y=1.1), margin=dict(l=20,r=20,t=50,b=20), xaxis=dict(title="Forecast horizon (h)", tickvals=[1,6,12,18,24], gridcolor=SOFT8[4]), yaxis=dict(title="Test R²", range=[0,1], gridcolor=SOFT8[4]))
-    st.plotly_chart(fig, width="stretch", config={"displaylogo": False}, key="validation_chart")
+    fig.update_layout(template="plotly_white", height=370, font=dict(color=INK, family="Arial", size=14), legend=dict(orientation="h", y=1.1, font=dict(size=13)), margin=dict(l=20,r=20,t=56,b=24), xaxis=dict(title="Forecast horizon (h)", tickfont=dict(size=13), tickvals=[1,6,12,18,24], gridcolor=SOFT8[4]), yaxis=dict(title="Test R²", tickfont=dict(size=13), range=[0,1], gridcolor=SOFT8[4]), paper_bgcolor="#FFFFFF", plot_bgcolor="#FFFFFF")
+    st.plotly_chart(fig, width="stretch", theme=None, config={"displaylogo": False}, key="validation_chart")
     st.caption("The future-feed hold-out results use executed feeding as an oracle. Performance with issued operator plans was not tested.")
     display = metrics[["h", "regime", "test_R2", "test_RMSE_m3_h", "test_MAE_m3_h", "coverage"]].copy()
     display["regime"] = display.regime.map({"past": "History only", "feed": "Executed-feed oracle"})
     display.columns = ["Horizon (h)", "Information", "Test R²", "RMSE (m³ h⁻¹)", "MAE (m³ h⁻¹)", "90% interval coverage"]
-    st.dataframe(display, hide_index=True, width="stretch", height=350)
+    st.dataframe(display, hide_index=True, width="stretch", height=380, row_height=36, column_config={
+        "Horizon (h)": st.column_config.NumberColumn(format="%d"),
+        "Test R²": st.column_config.NumberColumn(format="%.3f"),
+        "RMSE (m³ h⁻¹)": st.column_config.NumberColumn(format="%.1f"),
+        "MAE (m³ h⁻¹)": st.column_config.NumberColumn(format="%.1f"),
+        "90% interval coverage": st.column_config.NumberColumn(format="percent"),
+    })
     st.write("Intervals are calibrated separately for each horizon and information version using absolute errors from 696 validation origins. They remain fixed during app use; negative lower bounds are retained.")
     st.caption("Target: metered gas flow, rather than biological gas production. Training and validation cover one facility; external-site transfer and live operation have not been evaluated.")
     with st.expander("Model and input metadata"):

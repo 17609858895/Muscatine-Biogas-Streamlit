@@ -57,6 +57,6 @@ python scripts/validate_app.py
 
 `models/model_bundle.joblib` contains the fitted native boosters, feature schema, original calibration, input bounds, weights and model metadata. The original 18 LightGBM text files are retained as a portable source. `predictor.py` is copied unchanged from the local manuscript GUI. The native model and feature reconstruction fidelity records are retained in `validation/`.
 
-The quantitative charts use the exact **soft_8** base palette: `#79C1E4`, `#E68282`, `#B2D362`, `#BAE1F3`, `#D4EAF8`, `#EECDD5`, `#F8E6E4`, `#D1E4A6`.
+The interface uses a mist-blue background, white input and result cards, dark labels, and larger chart text. Tables display flows to one decimal place; CSV/XLSX exports retain the underlying precision. The quantitative charts use the exact **soft_8** base palette: `#79C1E4`, `#E68282`, `#B2D362`, `#BAE1F3`, `#D4EAF8`, `#EECDD5`, `#F8E6E4`, `#D1E4A6`.
 
-Author: CHONG LIU. App version: 2026.10.06.
+Author: CHONG LIU. App version: 2026.10.06.1.
